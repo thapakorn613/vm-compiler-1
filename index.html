@@ -4,33 +4,22 @@
     </head>
 <body>
     <script>
-        
-        // const name = "Thapakorn"
-        // console.log(name)
         // [1, 5, 3, 2, 12, 4, 9, 0] ->   5 time
         // [12, 0] -> Only Beep not repeat
         // const text = "1, 5, 3, 2, 12, 4, 9, 0"
-        const text = "1, 10, 16, 0"
+        // const text = "1, 10, 16, 0"
+        const text = "1, 1, 90, 49, 0"
+        // const text = "49, 1, 15, 90, 0"
         // const text = "12, 0"
-        // 1  - pushes 16-bit number on stack.
         var gblBuffer = [];
         var gblQueue = [];
         var lenghtOfBuffer = 0;
-
-        // const myBtn = document.getElementById('mybtn');
         var words = text.split(', ');
         
         for(var i=0;i<words.length;i++){
             var tempToInt = parseInt(words[i], 10);
             gblQueue.push(tempToInt);
-            // gblQueue.push(words[i]);
         }
-        console.log(gblQueue);
-        // lenghtOfBuffer = gblQueue.length;
-        // for(var i=0;i<lenghtOfBuffer;i++){
-        //     gblQueue.shift();
-        //     console.log("gblBuffer : ",gblQueue);
-        // }
 
         
         var loop = gblQueue.shift();
@@ -38,37 +27,7 @@
         var localBuffer = [];
         var cmdOpcode;
         // Stack
-        // do{
-        //     if (queueFisrt == 1){ //
-        //         var begin;
-        //         var immBuffer =[];
-        //         if(loop == -1){
-        //             imm = gblQueue.shift();
-        //         }
-        //         var tempQueue = gblQueue.shift();
-        //         if (tempQueue == 3){ //  start of list
-        //             // console.log("artttttttttttttt gblQueue ",gblQueue);
-        //             loop = gblQueue.shift();
-        //             while(loop != 4){
-        //                 // console.log("loop  : ",loop);
-        //                 localBuffer.push(loop);
-        //                 loop = gblQueue.shift();
-        //             }
-        //         }else {
-        //             loop = gblQueue.shift();
-        //         }
-        //         console.log("artttttttttttttt gblQueue ",gblQueue);
-        //         loop = gblQueue.shift();
-        //         console.log("artttttttttttttt gblQueue ",gblQueue);
-        //         cmdProcess(loop);
-        //     }
-        //     console.log("gblQueue  : ",gblQueue);
-        //     loop = gblQueue.shift();
-        //     console.log("loop  : ",loop);
-        // }while(loop != 0);
-
-        // Stack
-        for(var i=0;i<gblQueue.length;i++){
+        for(var i=0;i<gblQueue.length+1;i++){
             if (loop == 1){
                 imm = gblQueue.shift();
                 var cmdOpcode = gblQueue.shift();
@@ -81,31 +40,68 @@
                     cmdOpcode = gblQueue.shift();
                 }
                 cmdProcess(cmdOpcode);
+                loop = gblQueue.shift();
             }else {
                 cmdProcess(loop);
+                loop = gblQueue.shift();
             }
+            
             if(loop == 0){
+                console.log("end of loo[] ");
                 break;
             }
         }
-        console.log("end of loo[] ");
+        
 
-        function cmdProcess(cmdOpcode){
-            switch (cmdOpcode) {
+        function cmdProcess(_cmdOpcode){
+            switch (_cmdOpcode) {
+                case 9:
+                    Repeat(localBuffer,imm);
+                    break;
                 case 12:
-                    var cmdstr = chooseCmd(cmdOpcode);
-                    cmdBeep(cmdstr);
+                    var cmdstr = "beep";
+                    sendCmd(cmdstr);
                     break;
                 case 16:
                     cmdWait(imm);
                     break;
-                case 9:
-                    Repeat(localBuffer,imm);
+                case 49:
+                    var cmdstr = "motorOn";
+                    sendCmd(cmdstr);
+                    break;
+                case 90:
+                    selectMotor(imm);
+                    break;
+                case 99:
+                    showNumber(localBuffer,imm);
                     break;
                 default:
                     console.log("none jahh ");
                     break;
             }
+        }
+
+        function showNumber(){
+            console.log("none jahh ");
+        }
+
+        function selectMotor(_imm){
+            console.log("select motor ",_imm);
+
+        }
+        function chooseCmd(opcode){
+            var str="";
+            switch(opcode){
+                case 12:
+                    str = "beep";
+                    break;
+                case 0:
+                    str = "Looking";
+                    break;
+                default:
+                    str = "none";
+            }
+            return str;
         }
 
         function Repeat(Queue,Imm){
@@ -123,27 +119,14 @@
         }
 
         function cmdWait(Imm){
-            console.log("cmd wait :",Imm," sec");
+            console.log("wait ",Imm);
         }
 
-        function cmdBeep(str){
+        function sendCmd(str){
             console.log(str);
         }
 
-        function chooseCmd(opcode){
-            var str="";
-            switch(opcode){
-                case 12:
-                    str = "beep";
-                    break;
-                case 0:
-                    str = "Looking";
-                    break;
-                default:
-                    str = "none";
-            }
-            return str;
-        }
+        
         
         // var count = 0;
         // if (words[count++] == "1"){
