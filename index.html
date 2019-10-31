@@ -45,13 +45,11 @@
             var tempToInt = parseInt(words[i], 10);
             gblQueue.push(tempToInt);
         }
-
-        
         // var loop = gblQueue.shift();
         var imm1byte = [];
         var boolCompare =[];
         
-        var valueSensor1 =50;
+        var valueSensor1 =600;
         var sensorStackForIf = [];
         var localBuffer = [];
         var gblBuffer1 = [];
@@ -124,7 +122,7 @@
                         else {
                             for(var i=0;i<lenghtBuf;i++){
                                 loop = _gblQueue.shift();
-                            gblBuffer.push(loop);
+                                gblBuffer.push(loop);
                             }
                             gblBuffer.pop();
                             console.log("++++++++++ gblBuffer +++++++++++++++");
@@ -213,20 +211,23 @@
                     sendCmd(cmdstr);
                     break;
                 case 15:
-                    var tempForJ = parseInt(gblBuffer1.length, 10);
+                    forloop();
+                    // var tempForJ = parseInt(gblBuffer1.length, 10);
+                    // var count =0;
                     // setInterval(function(){
-                    for(var i=0;i<3;i++){
-                        var bufferLoop = [];
-                        for(var j=0;j<tempForJ;j++){
-                            bufferLoop.push(gblBuffer1[j]);
-                        }
-                        // boolGblBuffer = 1;
+                    // // for(var i=0;i<3;i++){
+                    //     var bufferLoop = [];
+                    //     for(var j=0;j<tempForJ;j++){
+                    //         bufferLoop.push(gblBuffer1[j]);
+                    //     }
+                    //     // boolGblBuffer = 1;
                         
-                        console.log("---------------------- loop ",i,"---------------------------");
-                        console.log("bufferLoop :",bufferLoop);
-                        vmProcess(bufferLoop);
-                    }
-                    // }, 1000);
+                    //     console.log("---------------------- loop ",count,"---------------------------");
+                    //     console.log("bufferLoop :",bufferLoop);
+                    //     vmProcess(bufferLoop);
+                    //     count++;
+                    // // }
+                    // },1000);
                     break;
                 case 16:
                     var _imm = imm1byte.pop();
@@ -329,6 +330,26 @@
             }
         }
 
+        function forloop(){
+
+            var tempForJ = parseInt(gblBuffer1.length, 10);
+            var count =0;
+            
+            setInterval(function(){
+            // for(var i=0;i<3;i++){
+                
+                // boolGblBuffer = 1;
+                var bufferLoop = [];
+                for(var j=0;j<tempForJ;j++){
+                    bufferLoop.push(gblBuffer1[j]);
+                }
+                console.log("---------------------- loop ",count,"---------------------------");
+                console.log("bufferLoop :",bufferLoop);
+                vmProcess(bufferLoop);
+                count++;
+            // }
+            },1000);
+        }
         function showNumber(){
             console.log("none jahh ");
         }
