@@ -6,7 +6,7 @@
 
     
     <script>
-        
+        const WAIT = 16;
         // [1, 5, 3, 2, 12, 4, 9, 0] ->   5 time
         // [12, 0] -> Only Beep not repeat
         /** 
@@ -24,7 +24,7 @@
     
         /** 
          * ! Repeat 5 beep */
-        // const text = "1, 5, 3, 2, 12, 4, 9, 0"
+        // const text = "1, 5, 3, 5, 12, 1, 10, 16, 4, 9, 0"
         /** 
          * ! Repeat 10 beep Repeat 10 talktomotor motorOn */
         // const text = "1, 10, 3, 12, 12, 1, 10, 3, 5, 1, 1, 90, 49, 4, 9, 4, 9, 0"
@@ -34,9 +34,10 @@
         // const text = "1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 0"
         /** 
          * ! for ever if ss1 < 500 talktomotor motorOn */
-        const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
-        // const text = "12, 0"
-        
+        // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
+        // const text = "2, 1, 244, 1, 2, 99, 0"
+        const text = "1, 0, 1, 2, 64, 3, 2, 51, 4, 48, 0";
+
         var gblQueue = [];
         var lenghtOfBuffer = 0;
         var words = text.split(', ');
@@ -49,23 +50,30 @@
         var imm1byte = [];
         var boolCompare =[];
         
-        var valueSensor1 =600;
+        var valueSensor1 =501;
         var sensorStackForIf = [];
         var localBuffer = [];
         var gblBuffer1 = [];
         var gblBuffer2 = [];
         var gblBuffer = [];
+        var gblReporter = false;
+        var gblTimer = 0;
         var boolGblBuffer = 0;
+        var boolGblLoop;
         // var boolGblBuffer2 = true;
         var tempLocalBuf =[];
         var imm2Number = [];
         var cmdOpcode = 0;
         var lenghtOfBuffer = gblQueue.length;
-        var boolFirst = true;
+        var delayInMilliseconds = 1000; //1 second
         console.log("gblQueue ",gblQueue);
+        var totalSeconds = 0;
+        // var secondsLabel = document.getElementById("seconds");
         
         // Stack
         vmProcess(gblQueue);
+        
+        console.log("totalSeconds :",totalSeconds);
 
         function vmProcess(_gblQueue){
             // console.log("local _gblQueue ,",localBuffer);
@@ -105,9 +113,9 @@
                                 gblBuffer1.push(loop);
                             }
                             gblBuffer1.pop();
-                            console.log("++++++++++ gblBuffer1 +++++++++++++++");
-                            console.log("gblBuffer1 : ",gblBuffer1);
-                            console.log("gblBuffer2 : ",gblBuffer2);
+                            // console.log("++++++++++ gblBuffer1 +++++++++++++++");
+                            // console.log("gblBuffer1 : ",gblBuffer1);
+                            // console.log("gblBuffer2 : ",gblBuffer2);
                             boolGblBuffer ++;  
                         }else if (boolGblBuffer == 1 ){
                             for(var i=0;i<lenghtBuf;i++){
@@ -115,7 +123,8 @@
                                 gblBuffer2.push(loop);
                             }
                             gblBuffer2.pop();
-                            console.log("++++++++++ gblBuffer2 +++++++++++++++");
+                            // console.log("++++++++++ gblBuffer2 +++++++++++++++");
+                            console.log("gblBuffer1 : ",gblBuffer1);
                             console.log("gblBuffer2 : ",gblBuffer2);
                             boolGblBuffer ++;
                         }
@@ -127,17 +136,17 @@
                             gblBuffer.pop();
                             console.log("++++++++++ gblBuffer +++++++++++++++");
                             // boolGblBuffer++;
-
                         }
-                        // console.log("gblBuffer1 : ",gblBuffer1);
-                        // console.log("gblBuffer2 : ",gblBuffer2);
-                        // _gblQueue.shift();
-                        
-                        // for(var j=0;j<localBuffer.length;j++){
-                        //     tempLocalBuf.push(localBuffer[j]);
-                        // }
-                        // console.log("tempLocalBuf : ",tempLocalBuf);
-                        // console.log("_gblQueue 333 :",_gblQueue);
+                        if(loop == 5){
+                            gblReporter = true;
+                            if(boolGblBuffer==1){
+                                vmProcess(gblBuffer1);
+                            }else if(boolGblBuffer==2){
+                                vmProcess(gblBuffer2);
+                            }else {
+                                vmProcess(gblBuffer);
+                            }
+                        }
                         // cmdProcess(cmdOpcode); // end set - opcode
                         loop = _gblQueue.shift(); // next set
                 }
@@ -156,6 +165,10 @@
         function cmdProcess(_cmdOpcode){
             switch (_cmdOpcode) {
                 case 1:
+                    break;
+                case 7:
+                    console.log("stop : ");
+                    clearInterval(boolGblLoop);
                     break;
                 case 9:
                     var _imm = imm1byte.shift();
@@ -176,10 +189,8 @@
                         }
                         boolGblBuffer=1;
                         // Repeat(gblBuffer2,_imm);
-                            
-                    }               
-                    // boolGblBuffer--;
-                    Repeat(bufferIf,_imm);         
+                    }   
+                    Repeat(bufferIf,_imm);    
                     break;
                 case 10: // ---- If ----- function
                     console.log("at if function ");
@@ -200,39 +211,95 @@
                             bufferIf.push(gblBuffer[j]);
                         }
                     }
-                    var _boolCompare = boolCompare.shift();
+                    var _boolCompare = boolCompare.pop();
                     if(_boolCompare == true){
                         console.log("TRUEEEEEEE");
                         vmProcess(bufferIf);
+                    }
+                    break;
+
+                case 11: // ---- If Else ----- function
+                    console.log("at if-else function ");
+                    console.log("bool :",boolCompare);
+                    var bufferIfinIf = [];
+                    var bufferIfinElse = [];
+                    var _boolCompare = boolCompare.pop();
+                    if(boolGblBuffer == 2 ){
+                        if(_boolCompare == true){
+                            var tempForJ = parseInt(gblBuffer1.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinIf.push(gblBuffer1[j]);
+                            }
+                            console.log("TRUEEEEEEE");
+                            vmProcess(bufferIfinIf);
+                        }else {
+                            var tempForJ = parseInt(gblBuffer2.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinElse.push(gblBuffer2[j]);
+                            }
+                            console.log("Falseeeeeeee");
+                            vmProcess(bufferIfinElse);
+                        }
+                    }
+                    else if(boolGblBuffer >= 3 ){
+                        if(_boolCompare == true){
+                            var tempForJ = parseInt(gblBuffer2.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinIf.push(gblBuffer2[j]);
+                            }
+                            console.log("TRUEEEEEEE");
+                            vmProcess(bufferIfinIf);
+                        }else {
+                            var tempForJ = parseInt(gblBuffer.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinElse.push(gblBuffer[j]);
+                            }
+                            console.log("Falseeeeeeee");
+                            vmProcess(bufferIfinElse);
+                        }
                     }
                     break;
                 case 12:
                     var cmdstr = "beep";
                     sendCmd(cmdstr);
                     break;
+                case 14:
+                    if(gblReporter){
+                        var myIntervel = setInterval(function(){    
+                            if(boolCompare.pop() == true){
+                                console.log("reporter: TRUE");
+                                clearInterval(myIntervel);
+                            }else {
+                                console.log("reporter: FALSE");
+                            }
+                        }, 100);
+                    }
+                    break;
                 case 15:
                     forloop();
-                    // var tempForJ = parseInt(gblBuffer1.length, 10);
-                    // var count =0;
-                    // setInterval(function(){
-                    // // for(var i=0;i<3;i++){
-                    //     var bufferLoop = [];
-                    //     for(var j=0;j<tempForJ;j++){
-                    //         bufferLoop.push(gblBuffer1[j]);
-                    //     }
-                    //     // boolGblBuffer = 1;
-                        
-                    //     console.log("---------------------- loop ",count,"---------------------------");
-                    //     console.log("bufferLoop :",bufferLoop);
-                    //     vmProcess(bufferLoop);
-                    //     count++;
-                    // // }
-                    // },1000);
                     break;
-                case 16:
+                case WAIT:
                     var _imm = imm1byte.pop();
-                    // console.log("wait _imm : ",_imm);
-                    cmdWait(_imm);
+                    _imm = _imm * 100;
+                    sleepMillisec(_imm);
+                    console.log("wait _imm : ",_imm);
+                    break;
+                case 17:
+                    setInterval(setTime, 1000);
+                    console.log("cmd Timer");
+                    break;
+                case 18:
+                    console.log("cmd Reset timer");
+                    break;
+                case 20: // IR 
+                    var getIRvalue = 600;
+                    imm1byte.push(getIRvalue);
+                    console.log("IR ");
+                    break;
+                case 21: // NEW IR 
+                    var getIRvalue = 500;
+                    imm1byte.push(getIRvalue);
+                    console.log("NEW IR ");
                     break;
                 case 23:
                     var _imm = imm1byte.pop();
@@ -258,6 +325,24 @@
                     var temp1 = imm1byte.pop();
                     _imm = _imm * temp1; 
                     imm1byte.push(_imm);
+                    break;
+                case 27: // 
+                    var _imm = imm1byte.pop();
+                    var temp1 = imm1byte.pop();
+                    _imm =  temp1 % _imm; 
+                    imm1byte.push(_imm);
+                    break;
+                case 28: // 
+                    var _imm = imm1byte.pop();
+                    var temp1 = imm1byte.pop();
+                    if(_imm == temp1){
+                        boolCompare.push(true);
+                        console.log("bool : ",boolCompare);
+                    } 
+                    else{
+                        boolCompare.push(false);
+                    } 
+                    // imm1byte.push(_imm);
                     break;
                 case 29:
                     // console.log("compare 29");
@@ -285,9 +370,102 @@
                     }
                     // console.log("boolCompare : ",boolCompare);
                     break;
+                case 31:
+                    console.log("compare 31");
+                    console.log("bool : ",boolCompare);
+                    var numSensor = sensorStackForIf.shift();
+                    var numCompare = imm1byte.shift();
+                    var _boolCompare1 = boolCompare.shift();
+                    var _boolCompare2 = boolCompare.shift();
+                    if(_boolCompare1 == true && _boolCompare2 == true){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    break;
+                case 32:
+                    console.log("compare 32");
+                    console.log("bool : ",boolCompare);
+                    var numSensor = sensorStackForIf.shift();
+                    var numCompare = imm1byte.shift();
+                    var _boolCompare1 = boolCompare.shift();
+                    var _boolCompare2 = boolCompare.shift();
+                    if(_boolCompare1 == true || _boolCompare2 == true){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    break;
+                case 33:
+                    console.log("compare 33 : XOR");
+                    console.log("bool : ",boolCompare);
+                    var numSensor = sensorStackForIf.shift();
+                    var numCompare = imm1byte.shift();
+                    var _boolCompare1 = boolCompare.shift();
+                    var _boolCompare2 = boolCompare.shift();
+                    if((_boolCompare1 && !_boolCompare2 ) || ( !_boolCompare1 && _boolCompare2 )){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    break;
+                case 34: // 
+                    var _imm = imm1byte.pop();
+                    var temp1 = imm1byte.pop();
+                    if(_imm !== temp1){
+                        boolCompare.push(true);
+                    }
+                    else{
+                        boolCompare.push(false);
+                    } 
+                    console.log("bool 34 : ",boolCompare);
+                    // imm1byte.push(_imm);
+                    break;
+                case 48:
+                    if(boolGblBuffer == 2 ){
+                        if(_boolCompare == true){
+                            var tempForJ = parseInt(gblBuffer1.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinIf.push(gblBuffer1[j]);
+                            }
+                            console.log("TRUEEEEEEE");
+                            vmProcess(bufferIfinIf);
+                        }else {
+                            var tempForJ = parseInt(gblBuffer2.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinElse.push(gblBuffer2[j]);
+                            }
+                            console.log("Falseeeeeeee");
+                            vmProcess(bufferIfinElse);
+                        }
+                    }
+                    else if(boolGblBuffer >= 3 ){
+                        if(_boolCompare == true){
+                            var tempForJ = parseInt(gblBuffer2.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinIf.push(gblBuffer2[j]);
+                            }
+                            console.log("TRUEEEEEEE");
+                            vmProcess(bufferIfinIf);
+                        }else {
+                            var tempForJ = parseInt(gblBuffer.length, 10);
+                            for(var j=0;j<tempForJ;j++){
+                                bufferIfinElse.push(gblBuffer[j]);
+                            }
+                            console.log("Falseeeeeeee");
+                            vmProcess(bufferIfinElse);
+                        }
+                    }
+                    break;
                 case 49:
                     var cmdstr = "motorOn";
                     sendCmd(cmdstr);
+                    break;
+                case 50:
+                    var _imm = imm1byte.pop();
+                    _imm = _imm * 100;
+                    sleepMillisec(_imm);
+                    console.log("wait _imm : ",_imm);
                     break;
                 case 51:
                     var cmdstr = "motorOff";
@@ -308,8 +486,20 @@
                 case 55:
                     var _imm = imm1byte.pop();
                     sensorStackForIf.push(_imm);
-                    var cmdstr = "sensor : " + _imm;
+                    // var cmdstr = "sensor : " + _imm;
                     // console.log("sensorStackForIf : ",sensorStackForIf);
+                    sendCmd(cmdstr);
+                    break;
+                case 64:
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    var statusSensor2isOn = true;
+                    var cmdstr = "sensor : " + _imm + " is on";
+                    if(statusSensor2isOn){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
                     sendCmd(cmdstr);
                     break;
                 case 90:
@@ -317,10 +507,13 @@
                     selectMotor(_imm);
                     break;
                 case 99:
-                    // var _imm = imm1byte.pop();
-                    // if(_imm == 2){
-                        console.log("Show text",imm1byte);
-                    // }
+                    if(imm1byte.pop() == 2 ){
+                        var _imm = imm1byte.pop();
+                        console.log("Show text ",_imm);
+                    }else {
+                        console.log("ERROR IN OPCODE 99");
+                    }
+
                     break;
                 case undefined:
                     break;
@@ -331,13 +524,10 @@
         }
 
         function forloop(){
-
             var tempForJ = parseInt(gblBuffer1.length, 10);
             var count =0;
-            
-            setInterval(function(){
+            boolGblLoop = setInterval(function(){
             // for(var i=0;i<3;i++){
-                
                 // boolGblBuffer = 1;
                 var bufferLoop = [];
                 for(var j=0;j<tempForJ;j++){
@@ -376,7 +566,6 @@
         function Repeat(_gblBuffer1,Imm){
             var loopBuffer = [];
             var tempLenghRepeat = parseInt(_gblBuffer1.length, 10);
-            // console.log("loop : oooooooooooooooooooooooo");
             for(var i=0;i<Imm;i++){
                 for(var j=0;j<tempLenghRepeat;j++){
                     loopBuffer.push(_gblBuffer1[j]);
@@ -387,15 +576,23 @@
 
         function cmdWait(Imm){
             var _imm = Imm * 100;
-            // setTimeout(function(){ console.log("wait "); }, 1000);
             console.log("wait :",_imm);
         }
-
         function sendCmd(str){
             console.log(str);
         }
+        function sleepMillisec(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                break;
+                }
+            }
+        }
 
-        
+        function setTime() {
+            totalSeconds++;
+        }
         
         // var count = 0;
         // if (words[count++] == "1"){
