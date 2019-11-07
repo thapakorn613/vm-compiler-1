@@ -36,7 +36,7 @@
          * ! for ever if ss1 < 500 talktomotor motorOn */
         // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
         // const text = "2, 1, 244, 1, 2, 99, 0"
-        const text = "1, 0, 1, 2, 64, 3, 2, 51, 4, 48, 0";
+        const text = "1, 0, 1, 2, 65, 3, 2, 49, 4, 48, 0";
 
         var gblQueue = [];
         var lenghtOfBuffer = 0;
@@ -423,7 +423,6 @@
                     break;
                 case 48:
                     console.log("at if-one-time function ");
-                    
                     var bufferIf = [];
                     if(boolGblBuffer == 1 ){
                         var tempForJ = parseInt(gblBuffer1.length, 10);
@@ -485,6 +484,18 @@
                     // GET  STATUS SENSOR
                     var statusSensor2isOn = true;
                     var cmdstr = "sensor : " + _imm + " is on";
+                    if(statusSensor2isOn){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    sendCmd(cmdstr);
+                    break;
+                case 65:
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    var statusSensor2isOn = true;
+                    var cmdstr = "sensor : " + _imm + " is off";
                     if(statusSensor2isOn){
                         boolCompare.push(true);
                     }else {
