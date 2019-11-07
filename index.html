@@ -36,7 +36,7 @@
          * ! for ever if ss1 < 500 talktomotor motorOn */
         // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
         // const text = "2, 1, 244, 1, 2, 99, 0"
-        const text = "1, 0, 1, 2, 64, 3, 2, 51, 4, 48, 0";
+        const text = "1, 0, 1, 2, 65, 3, 2, 49, 4, 48, 0";
 
         var gblQueue = [];
         var lenghtOfBuffer = 0;
@@ -422,39 +422,28 @@
                     // imm1byte.push(_imm);
                     break;
                 case 48:
-                    if(boolGblBuffer == 2 ){
-                        if(_boolCompare == true){
-                            var tempForJ = parseInt(gblBuffer1.length, 10);
-                            for(var j=0;j<tempForJ;j++){
-                                bufferIfinIf.push(gblBuffer1[j]);
-                            }
-                            console.log("TRUEEEEEEE");
-                            vmProcess(bufferIfinIf);
-                        }else {
-                            var tempForJ = parseInt(gblBuffer2.length, 10);
-                            for(var j=0;j<tempForJ;j++){
-                                bufferIfinElse.push(gblBuffer2[j]);
-                            }
-                            console.log("Falseeeeeeee");
-                            vmProcess(bufferIfinElse);
+                    console.log("at if-one-time function ");
+                    var bufferIf = [];
+                    if(boolGblBuffer == 1 ){
+                        var tempForJ = parseInt(gblBuffer1.length, 10);
+                        for(var j=0;j<tempForJ;j++){
+                            bufferIf.push(gblBuffer1[j]);
+                        }
+                    }else if(boolGblBuffer == 2){
+                        var tempForJ = parseInt(gblBuffer2.length, 10);
+                        for(var j=0;j<tempForJ;j++){
+                            bufferIf.push(gblBuffer2[j]);
+                        }
+                    }else {
+                        var tempForJ = parseInt(gblBuffer.length, 10);
+                        for(var j=0;j<tempForJ;j++){
+                            bufferIf.push(gblBuffer[j]);
                         }
                     }
-                    else if(boolGblBuffer >= 3 ){
-                        if(_boolCompare == true){
-                            var tempForJ = parseInt(gblBuffer2.length, 10);
-                            for(var j=0;j<tempForJ;j++){
-                                bufferIfinIf.push(gblBuffer2[j]);
-                            }
-                            console.log("TRUEEEEEEE");
-                            vmProcess(bufferIfinIf);
-                        }else {
-                            var tempForJ = parseInt(gblBuffer.length, 10);
-                            for(var j=0;j<tempForJ;j++){
-                                bufferIfinElse.push(gblBuffer[j]);
-                            }
-                            console.log("Falseeeeeeee");
-                            vmProcess(bufferIfinElse);
-                        }
+                    var _boolCompare = boolCompare.pop();
+                    if(_boolCompare == true){
+                        console.log("TRUEEEEEEE");
+                        vmProcess(bufferIf);
                     }
                     break;
                 case 49:
@@ -496,6 +485,18 @@
                     var statusSensor2isOn = true;
                     var cmdstr = "sensor : " + _imm + " is on";
                     if(statusSensor2isOn){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    sendCmd(cmdstr);
+                    break;
+                case 65:
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    var statusSensorXisOff = true;
+                    var cmdstr = "sensor : " + _imm + " is off";
+                    if(statusSensorXisOff){
                         boolCompare.push(true);
                     }else {
                         boolCompare.push(false);
