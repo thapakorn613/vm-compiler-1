@@ -6,7 +6,29 @@
 
     
     <script>
-        const WAIT = 16;
+        const WAIT          = 16;
+        const OP_PLUS       = 23;
+        const OP_MINUS      = 24;
+        const OP_MULTIPLY   = 25;
+        const OP_DIVISION   = 26;
+        const OP_MODULO     = 27; 
+        const OP_EQUAL      = 28;
+        const OP_GREATER    = 29;
+        const OP_LESS       = 30;
+        const OP_AND        = 31;
+        const OP_OR         = 32;
+        const OP_XOR        = 33;
+        const OP_NOT        = 31;
+        const SETPOWER      = 59;
+        const OP_GREATER_OR_EQUAL   = 61; 
+        const OP_LESS_OR_EQUAL      = 62;
+        const ISTHISWAY     = 66;
+        const ISTHATWAY     = 67;
+        const SERVO_SET_H   = 87;
+        const SERVO_LT      = 88;
+        const SERVO_RT      = 89;
+        const STRING        = 111;
+
         // [1, 5, 3, 2, 12, 4, 9, 0] ->   5 time
         // [12, 0] -> Only Beep not repeat
         /** 
@@ -35,7 +57,7 @@
         /** 
          * ! for ever if ss1 < 500 talktomotor motorOn */
         // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
-        const text = "1, 0, 1, 2, 64, 3, 2, 51, 4, 48, 0"
+        const text = "1, 0, 1, 0, 35, 1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 34, 3, 5, 49, 1, 10, 16, 4, 10, 0"
         // const text = "1, 1, 55, 1, 46, 29, 3, 2, 12, 4, 10, 0" // Beep
         // const text = "1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 0";
         // const text = "3, 23, 1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 4, 15, 0";
@@ -53,15 +75,12 @@
         var imm1byte = [];
         var boolCompare =[];
         
-        var valueSensor1 =1000;
+        var valueSensor1 = 501;
         var sensorStackForIf = [];
         var localBuffer = [];
-        var gblBuffer1 = [];
-        var gblBuffer2 = [];
-        var gblBuffer3 = [];
         var gblBuffer = [];
-
         var gblBufferTest = [];
+        var gblString = [];
 
         var gblReporter = false;
         var gblTimer = 0;
@@ -78,15 +97,16 @@
         var totalSeconds = 0;
 
         var countVMpro = 0;
+
+        console.log("valueSensor1 : "+valueSensor1);
         vmProcess(gblQueue);
-        
 
         function vmProcess(_gblQueue){
             // console.log("local _gblQueue ,",localBuffer);
             // console.log("_gblQueue ,",_gblQueue);
             var loop = _gblQueue.shift();
             // Stack
-            for(var i=0;i<100;i++){
+            for(var i=0;i<1000;i++){
                 if (loop == 1){
                     var tempImm = _gblQueue.shift();
                     imm1byte.push(parseInt(tempImm, 10));
@@ -122,6 +142,16 @@
                         // console.log("gblBufferTest : ",gblBufferTest);
                         loop = _gblQueue.shift(); // next set
                 }
+                else if (loop == 111){
+                    var lenghtBuf = _gblQueue.shift();
+                    var bufferTemp =[];      
+                    for(var i=0;i<lenghtBuf;i++){
+                        loop = _gblQueue.shift();
+                        gblString.push(loop);
+                    }
+                    console.log("bufferTemp : ",bufferTemp);
+                    loop = _gblQueue.shift(); // next set
+                }
                 else {
                     cmdProcess(loop); // end set - opcode
                     loop = _gblQueue.shift(); // next set
@@ -132,7 +162,6 @@
                 }
             }
         }
-
         function cmdProcess(_cmdOpcode){
             switch (_cmdOpcode) {
                 case 1:
@@ -148,7 +177,6 @@
                     for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
                         bufferTemp.push(gblBufferTest[indexGblBuf-1][j]);
                     }
-
                     console.log("bufferTemp Repeat : ",bufferTemp);
                     Repeat(bufferTemp,_imm);    
                     break;
@@ -165,7 +193,7 @@
                         console.log("TRUEEEEEEE");
                         vmProcess(bufferIf);
                     }
-                    break;
+                    break;  
 
                 case 11: // ---- If Else ----- function
                     console.log("at if-else function ");
@@ -232,13 +260,13 @@
                     imm1byte.push(getIRvalue);
                     console.log("NEW IR ");
                     break;
-                case 23:
+                case OP_PLUS:
                     var _imm = imm1byte.pop();
                     var _temp1 = imm1byte.pop();
                     _imm = _temp1 + _imm;
                     imm1byte.push(_imm);
                     break;
-                case 24:
+                case OP_MINUS:
                     var _imm = imm1byte.pop();
                     var _temp1 = imm1byte.pop();
                     _imm = _temp1 - _imm;
@@ -276,8 +304,6 @@
                     // imm1byte.push(_imm);
                     break;
                 case 29:
-                    // console.log("compare 29");
-                    // console.log("imm1byte : ",imm1byte);
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.pop();
                     console.log("sensor[",numSensor,"]:",valueSensor1," > ",numCompare);
@@ -286,11 +312,8 @@
                     }else {
                         boolCompare.push(false);
                     }
-                    // console.log("boolCompare : ",boolCompare);
                     break;
                 case 30:
-                    // console.log("compare 30");
-                    // console.log("imm1byte : ",imm1byte);
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
                     console.log("sensor[",numSensor,"]:",valueSensor1," < ",numCompare);
@@ -299,7 +322,6 @@
                     }else {
                         boolCompare.push(false);
                     }
-                    // console.log("boolCompare : ",boolCompare);
                     break;
                 case 31:
                     console.log("compare 31");
@@ -340,7 +362,29 @@
                         boolCompare.push(false);
                     }
                     break;
-                case 34: // 
+                case OP_GREATER_OR_EQUAL:
+                    console.log("compare 61 : OP_GREATER_OR_EQUAL");
+                    var numSensor = sensorStackForIf.shift();
+                    var numCompare = imm1byte.shift();
+                    if( valueSensor1 >= numCompare){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    console.log("bool : ",boolCompare);
+                    break;
+                case OP_LESS_OR_EQUAL:
+                    console.log("compare 62 : OP_LESS_OR_EQUAL");
+                    var numSensor = sensorStackForIf.shift();
+                    var numCompare = imm1byte.shift();
+                    if( valueSensor1 <= numCompare){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    console.log("bool : ",boolCompare);
+                    break;
+                case 34:
                     var _imm = imm1byte.pop();
                     var temp1 = imm1byte.pop();
                     if(_imm !== temp1){
@@ -350,7 +394,6 @@
                         boolCompare.push(false);
                     } 
                     console.log("bool 34 : ",boolCompare);
-                    // imm1byte.push(_imm);
                     break;
                 case 48:
                     console.log("at if-one-time function ");
@@ -359,7 +402,6 @@
                     for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
                         bufferIfinIf.push(gblBufferTest[indexGblBuf-1][j]);
                     }
-                    // console.log("bufferIfinIf : ",bufferIfinIf);
                     var _boolCompare = boolCompare.pop();
                     if(_boolCompare == true){
                         console.log("TRUEEEEEEE");
@@ -399,9 +441,17 @@
                     // console.log("sensorStackForIf : ",sensorStackForIf);
                     sendCmd(cmdstr);
                     break;
+                case SETPOWER:
+                    var _imm = imm1byte.pop();
+                    sensorStackForIf.push(_imm);
+                    var valuePowerOfMotor = _imm;
+                    var cmdstr = "setPower motor : "+valuePowerOfMotor;
+                    sendCmd(cmdstr);
+                    break;
                 case 64:
                     var _imm = imm1byte.pop();
                     // GET  STATUS SENSOR
+                    // fix sensor value
                     var statusSensor2isOn = true;
                     var cmdstr = "sensor : " + _imm + " is on";
                     if(statusSensor2isOn){
@@ -423,19 +473,85 @@
                     }
                     sendCmd(cmdstr);
                     break;
+                case ISTHISWAY: // opcode 66
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    // fix direction of motor
+                    var statusMotorIsCW = true;
+                    var cmdstr = "sensor : " + _imm + " direction is CW ";
+                    if(statusMotorIsCW){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    console.log("bool : ",boolCompare);
+                    sendCmd(cmdstr);
+                    break;
+                
+                case ISTHATWAY: // opcode 66
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    // fix direction of motor
+                    var statusMotorIsCCW = true;
+                    var cmdstr = "sensor : " + _imm + " direction is CCW ";
+                    if(statusMotorIsCCW){
+                        boolCompare.push(true);
+                    }else {
+                        boolCompare.push(false);
+                    }
+                    console.log("bool : ",boolCompare);
+                    sendCmd(cmdstr);
+                    break;
+                case SERVO_SET_H: // opcode 87
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    // fix direction of motor
+                    var headerServe = _imm;
+                    var cmdstr = "servo set header: " + _imm ;
+                    sendCmd(cmdstr);
+                    break;
+                case SERVO_LT: // opcode 87
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    // fix direction of motor
+                    var headerServe = _imm;
+                    var cmdstr = "servo set SERVO_LT: " + _imm ;
+                    sendCmd(cmdstr);
+                    break;
+                case SERVO_RT: // opcode 87
+                    var _imm = imm1byte.pop();
+                    // GET  STATUS SENSOR
+                    // fix direction of motor
+                    var headerServe = _imm;
+                    var cmdstr = "servo set SERVO_RT: " + _imm ;
+                    sendCmd(cmdstr);
+                    break;
                 case 90:
                     var _imm = imm1byte.pop();
                     var str = "select motor "+_imm;
                     sendCmd(str);
                     break;
                 case 99:
-                    if(imm1byte.pop() == 2 ){
+                    var check_type = imm1byte.pop();
+                    if(check_type == 2 ){
                         var _imm = imm1byte.pop();
-                        console.log("Show text ",_imm);
+                        console.log("Show number : ",_imm);
+                    }
+                    else if(check_type == 3 ){
+                        for(var i=0;i<gblString.length;i++){
+                            // function convert to ASCII    
+                        }
+                        console.log("Show text : "+gblString);
                     }else {
                         console.log("ERROR IN OPCODE 99");
                     }
-
+                    break;
+                case 107:
+                    var tempASCII_3 = imm1byte.pop();
+                    var tempASCII_2 = imm1byte.pop();
+                    var tempASCII_1 = imm1byte.pop();
+                    var str = "I2C Write value "+tempASCII_1 + " to Register# "+tempASCII_2 + " on device address # "+tempASCII_3;
+                    sendCmd(str);
                     break;
                 case undefined:
                     break;
