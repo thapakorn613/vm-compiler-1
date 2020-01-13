@@ -46,7 +46,7 @@
     
         /** 
          * ! Repeat 5 beep */
-        // const text = "1, 5, 3, 5, 12, 1, 10, 16, 4, 9, 0"
+        const text = "1, 10, 3, 5, 12, 1, 10, 16, 4, 9, 0"
         /** 
          * ! Repeat 10 beep Repeat 10 talktomotor motorOn */
         // const text = "1, 5, 3, 12, 12, 1, 2, 3, 5, 1, 1, 90, 49, 4, 9, 4, 9, 0"
@@ -57,7 +57,7 @@
         /** 
          * ! for ever if ss1 < 500 talktomotor motorOn */
         // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
-        const text = "1, 0, 1, 0, 35, 1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 34, 3, 5, 49, 1, 10, 16, 4, 10, 0"
+        // const text = "1, 0, 1, 0, 35, 1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 34, 3, 5, 49, 1, 10, 16, 4, 10, 0"
         // const text = "1, 1, 55, 1, 46, 29, 3, 2, 12, 4, 10, 0" // Beep
         // const text = "1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 0";
         // const text = "3, 23, 1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 4, 15, 0";
@@ -173,7 +173,9 @@
                 case 9:
                     var _imm = imm1byte.shift();
                     var bufferTemp = [];
+                    console.log("gblBufferTest :",gblBufferTest.length);
                     var indexGblBuf = parseInt(gblBufferTest.length, 10);
+                    console.log("indexGblBuf : ",indexGblBuf);
                     for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
                         bufferTemp.push(gblBufferTest[indexGblBuf-1][j]);
                     }
