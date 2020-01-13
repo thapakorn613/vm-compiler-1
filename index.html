@@ -1,33 +1,35 @@
 <html>
-    <head>
+
+<head>
     <title>art ronin </title>
-    </head>
+</head>
+
 <body>
 
-    
+
     <script>
-        const WAIT          = 16;
-        const OP_PLUS       = 23;
-        const OP_MINUS      = 24;
-        const OP_MULTIPLY   = 25;
-        const OP_DIVISION   = 26;
-        const OP_MODULO     = 27; 
-        const OP_EQUAL      = 28;
-        const OP_GREATER    = 29;
-        const OP_LESS       = 30;
-        const OP_AND        = 31;
-        const OP_OR         = 32;
-        const OP_XOR        = 33;
-        const OP_NOT        = 31;
-        const SETPOWER      = 59;
-        const OP_GREATER_OR_EQUAL   = 61; 
-        const OP_LESS_OR_EQUAL      = 62;
-        const ISTHISWAY     = 66;
-        const ISTHATWAY     = 67;
-        const SERVO_SET_H   = 87;
-        const SERVO_LT      = 88;
-        const SERVO_RT      = 89;
-        const STRING        = 111;
+        const WAIT = 16;
+        const OP_PLUS = 23;
+        const OP_MINUS = 24;
+        const OP_MULTIPLY = 25;
+        const OP_DIVISION = 26;
+        const OP_MODULO = 27;
+        const OP_EQUAL = 28;
+        const OP_GREATER = 29;
+        const OP_LESS = 30;
+        const OP_AND = 31;
+        const OP_OR = 32;
+        const OP_XOR = 33;
+        const OP_NOT = 31;
+        const SETPOWER = 59;
+        const OP_GREATER_OR_EQUAL = 61;
+        const OP_LESS_OR_EQUAL = 62;
+        const ISTHISWAY = 66;
+        const ISTHATWAY = 67;
+        const SERVO_SET_H = 87;
+        const SERVO_LT = 88;
+        const SERVO_RT = 89;
+        const STRING = 111;
 
         // [1, 5, 3, 2, 12, 4, 9, 0] ->   5 time
         // [12, 0] -> Only Beep not repeat
@@ -43,10 +45,13 @@
         //  const text = "1, 10, 16, 0" // wait 100 milisec / 1 sec
         //  const text = "1, 4, 1, 10, 25, 16, 0"
         //  const text = "2, 1, 0, 1, 2, 99, 0"
-    
+
         /** 
          * ! Repeat 5 beep */
-        const text = "1, 10, 3, 5, 12, 1, 10, 16, 4, 9, 0"
+        // const text = "1, 10, 3, 2, 12, 4, 9, 0"
+        /**
+        * ! Repeat 5 beep and if sensor*/
+        // const text = "1, 10, 3, 13, 1, 1, 55, 2, 1, 244, 29, 3, 2, 12, 4, 10, 4, 9, 0"
         /** 
          * ! Repeat 10 beep Repeat 10 talktomotor motorOn */
         // const text = "1, 5, 3, 12, 12, 1, 2, 3, 5, 1, 1, 90, 49, 4, 9, 4, 9, 0"
@@ -56,7 +61,7 @@
         // const text = "1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 0"
         /** 
          * ! for ever if ss1 < 500 talktomotor motorOn */
-        // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
+        const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
         // const text = "1, 0, 1, 0, 35, 1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 34, 3, 5, 49, 1, 10, 16, 4, 10, 0"
         // const text = "1, 1, 55, 1, 46, 29, 3, 2, 12, 4, 10, 0" // Beep
         // const text = "1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 0";
@@ -66,20 +71,22 @@
         var gblQueue = [];
         var lenghtOfBuffer = 0;
         var words = text.split(', ');
-        
-        for(var i=0;i<words.length;i++){
+
+        for (var i = 0; i < words.length; i++) {
             var tempToInt = parseInt(words[i], 10);
             gblQueue.push(tempToInt);
         }
         // var loop = gblQueue.shift();
         var imm1byte = [];
-        var boolCompare =[];
-        
+        var boolCompare = [];
+
         var valueSensor1 = 501;
         var sensorStackForIf = [];
         var localBuffer = [];
-        var gblBuffer = [];
+        // var gblBuffer = [];
         var gblBufferTest = [];
+        // var gblBufferTemp = [];
+
         var gblString = [];
 
         var gblReporter = false;
@@ -87,32 +94,32 @@
         var boolGblBuffer = 0;
         var gblBufferIndex = 0;
         var boolGblLoop;
-        
-        var tempLocalBuf =[];
+
+        var tempLocalBuf = [];
         var imm2Number = [];
         var cmdOpcode = 0;
         var lenghtOfBuffer = gblQueue.length;
         var delayInMilliseconds = 1000; //1 second
-        console.log("gblQueue ",gblQueue);
+        console.log("gblQueue ", gblQueue);
         var totalSeconds = 0;
 
         var countVMpro = 0;
 
-        console.log("valueSensor1 : "+valueSensor1);
+        console.log("valueSensor1 : " + valueSensor1);
         vmProcess(gblQueue);
 
-        function vmProcess(_gblQueue){
+        function vmProcess(_gblQueue) {
             // console.log("local _gblQueue ,",localBuffer);
             // console.log("_gblQueue ,",_gblQueue);
             var loop = _gblQueue.shift();
             // Stack
-            for(var i=0;i<1000;i++){
-                if (loop == 1){
+            for (var i = 0; i < 1000; i++) {
+                if (loop == 1) {
                     var tempImm = _gblQueue.shift();
                     imm1byte.push(parseInt(tempImm, 10));
                     loop = _gblQueue.shift(); // next set
-                }else if (loop == 2){
-                    for(var i=0;i<2;i++){
+                } else if (loop == 2) {
+                    for (var i = 0; i < 2; i++) {
                         var tempImmNumber = _gblQueue.shift();
                         imm2Number.push(parseInt(tempImmNumber, 10));
                     }
@@ -120,49 +127,49 @@
                     var lowByte = imm2Number.shift();
                     var tempNumIf = highByte + lowByte;
                     imm1byte.push(tempNumIf);
-                    console.log("imm1byte : ",imm1byte);
+                    console.log("imm1byte : ", imm1byte);
                     var typeCompare = _gblQueue.shift();
-                    if(typeCompare == 1 ){
+                    if (typeCompare == 1) {
                         _gblQueue.shift();
                     }
                     cmdProcess(typeCompare);
                     loop = _gblQueue.shift(); // next set
-                }else if (loop == 3){ //  start of list
-                        var lenghtBuf = _gblQueue.shift();
-                        var bufferTemp =[];      
-                        for(var i=0;i<lenghtBuf;i++){
-                            loop = _gblQueue.shift();
-                            bufferTemp.push(loop);
-                        }
-                        countVMpro++;
-                        bufferTemp.pop();
-                        gblBufferTest.push(bufferTemp);
-                        // console.log("------------- ",countVMpro,"-------------");
-                        console.log("bufferTemp : ",bufferTemp);
-                        // console.log("gblBufferTest : ",gblBufferTest);
-                        loop = _gblQueue.shift(); // next set
-                }
-                else if (loop == 111){
+                } else if (loop == 3) { //  start of list
                     var lenghtBuf = _gblQueue.shift();
-                    var bufferTemp =[];      
-                    for(var i=0;i<lenghtBuf;i++){
+                    var bufferTemp = [];
+                    for (var i = 0; i < lenghtBuf; i++) {
+                        loop = _gblQueue.shift();
+                        bufferTemp.push(loop);
+                    }
+                    countVMpro++;
+                    bufferTemp.pop();
+                    gblBufferTest.push(bufferTemp);
+                    // console.log("------------- ",countVMpro,"-------------");
+                    console.log("bufferTemp : ", bufferTemp);
+                    // console.log("gblBufferTest : ",gblBufferTest);
+                    loop = _gblQueue.shift(); // next set
+                }
+                else if (loop == 111) {
+                    var lenghtBuf = _gblQueue.shift();
+                    var bufferTemp = [];
+                    for (var i = 0; i < lenghtBuf; i++) {
                         loop = _gblQueue.shift();
                         gblString.push(loop);
                     }
-                    console.log("bufferTemp : ",bufferTemp);
+                    console.log("bufferTemp : ", bufferTemp);
                     loop = _gblQueue.shift(); // next set
                 }
                 else {
                     cmdProcess(loop); // end set - opcode
                     loop = _gblQueue.shift(); // next set
                 }
-                if(loop == 0 || loop === undefined ){
+                if (loop == 0 || loop === undefined) {
                     console.log("end of loop");
                     break;
                 }
             }
         }
-        function cmdProcess(_cmdOpcode){
+        function cmdProcess(_cmdOpcode) {
             switch (_cmdOpcode) {
                 case 1:
                     break;
@@ -173,50 +180,50 @@
                 case 9:
                     var _imm = imm1byte.shift();
                     var bufferTemp = [];
-                    console.log("gblBufferTest :",gblBufferTest.length);
+                    console.log("gblBufferTest :", gblBufferTest.length);
                     var indexGblBuf = parseInt(gblBufferTest.length, 10);
-                    console.log("indexGblBuf : ",indexGblBuf);
-                    for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
-                        bufferTemp.push(gblBufferTest[indexGblBuf-1][j]);
+                    console.log("indexGblBuf : ", indexGblBuf);
+                    for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
+                        bufferTemp.push(gblBufferTest[indexGblBuf - 1][j]);
                     }
-                    console.log("bufferTemp Repeat : ",bufferTemp);
-                    Repeat(bufferTemp,_imm);    
+                    console.log("bufferTemp Repeat : ", bufferTemp);
+                    Repeat(bufferTemp, _imm);
                     break;
                 case 10: // ---- If ----- function
                     console.log("at if function ");
                     var bufferIf = [];
                     var indexGblBuf = parseInt(gblBufferTest.length, 10);
-                    for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
-                        bufferIf.push(gblBufferTest[indexGblBuf-1][j]);
+                    for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
+                        bufferIf.push(gblBufferTest[indexGblBuf - 1][j]);
                     }
-                    console.log("bufferIf : ",bufferIf);
+                    console.log("bufferIf : ", bufferIf);
                     var _boolCompare = boolCompare.pop();
-                    if(_boolCompare == true){
+                    if (_boolCompare == true) {
                         console.log("TRUEEEEEEE");
                         vmProcess(bufferIf);
                     }
-                    break;  
+                    break;
 
                 case 11: // ---- If Else ----- function
                     console.log("at if-else function ");
-                    console.log("bool :",boolCompare);
+                    console.log("bool :", boolCompare);
                     var _boolCompare = boolCompare.pop();
                     var bufferIfinIf = [];
                     var indexGblBuf = parseInt(gblBufferTest.length, 10);
-                    if(_boolCompare == true){
-                        for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
-                            bufferIfinIf.push(gblBufferTest[indexGblBuf-1][j]);
+                    if (_boolCompare == true) {
+                        for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
+                            bufferIfinIf.push(gblBufferTest[indexGblBuf - 1][j]);
                         }
                         console.log("TRUEEEEEEE");
-                        console.log("bufferIfinIf : ",bufferIfinIf);
+                        console.log("bufferIfinIf : ", bufferIfinIf);
                         vmProcess(bufferIfinIf);
-                    }else {
+                    } else {
                         var indexGblBuf = parseInt(gblBufferTest.length, 10);
-                        for(var j=0;j<gblBufferTest[indexGblBuf-2].length;j++){
-                            bufferIfinIf.push(gblBufferTest[indexGblBuf-2][j]);
+                        for (var j = 0; j < gblBufferTest[indexGblBuf - 2].length; j++) {
+                            bufferIfinIf.push(gblBufferTest[indexGblBuf - 2][j]);
                         }
                         console.log("Falseeeeee");
-                        console.log("bufferIfinIf : ",bufferIfinIf);
+                        console.log("bufferIfinIf : ", bufferIfinIf);
                         vmProcess(bufferIfinIf);
                     }
                     break;
@@ -225,25 +232,35 @@
                     sendCmd(cmdstr);
                     break;
                 case 14:
-                    if(gblReporter){
-                        var myIntervel = setInterval(function(){    
-                            if(boolCompare.pop() == true){
+                    if (gblReporter) {
+                        var myIntervel = setInterval(function () {
+                            if (boolCompare.pop() == true) {
                                 console.log("reporter: TRUE");
                                 clearInterval(myIntervel);
-                            }else {
+                            } else {
                                 console.log("reporter: FALSE");
                             }
                         }, 100);
                     }
                     break;
                 case 15:
-                    forloop();
+                    var _imm = imm1byte.shift();
+                    var bufferTemp = [];
+                    console.log("gblBufferTest :", gblBufferTest.length);
+                    var indexGblBuf = parseInt(gblBufferTest.length, 10);
+                    console.log("indexGblBuf : ", indexGblBuf);
+                    for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
+                        bufferTemp.push(gblBufferTest[indexGblBuf - 1][j]);
+                    }
+                    console.log("bufferTemp For loop : ", bufferTemp);
+                    forLoop(bufferTemp);
+                    // forloop();
                     break;
                 case WAIT:
                     var _imm = imm1byte.pop();
                     _imm = _imm * 100;
                     sleepMillisec(_imm);
-                    console.log("wait _imm : ",_imm);
+                    console.log("wait _imm : ", _imm);
                     break;
                 case 17:
                     setInterval(setTime, 1000);
@@ -277,90 +294,90 @@
                 case 26:
                     var _imm = imm1byte.pop();
                     var _temp1 = imm1byte.pop();
-                    _imm = _temp1/_imm;
+                    _imm = _temp1 / _imm;
                     console.log(_imm);
                     imm1byte.push(_imm);
                     break;
                 case 25:
                     var _imm = imm1byte.pop();
                     var temp1 = imm1byte.pop();
-                    _imm = _imm * temp1; 
+                    _imm = _imm * temp1;
                     imm1byte.push(_imm);
                     break;
                 case 27: // 
                     var _imm = imm1byte.pop();
                     var temp1 = imm1byte.pop();
-                    _imm =  temp1 % _imm; 
+                    _imm = temp1 % _imm;
                     imm1byte.push(_imm);
                     break;
                 case 28: // 
                     var _imm = imm1byte.pop();
                     var temp1 = imm1byte.pop();
-                    if(_imm == temp1){
+                    if (_imm == temp1) {
                         boolCompare.push(true);
-                        console.log("bool : ",boolCompare);
-                    } 
-                    else{
+                        console.log("bool : ", boolCompare);
+                    }
+                    else {
                         boolCompare.push(false);
-                    } 
+                    }
                     // imm1byte.push(_imm);
                     break;
                 case 29:
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.pop();
-                    console.log("sensor[",numSensor,"]:",valueSensor1," > ",numCompare);
-                    if (valueSensor1 > numCompare){
+                    console.log("sensor[", numSensor, "]:", valueSensor1, " > ", numCompare);
+                    if (valueSensor1 > numCompare) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     break;
                 case 30:
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
-                    console.log("sensor[",numSensor,"]:",valueSensor1," < ",numCompare);
-                    if (valueSensor1 < numCompare){
+                    console.log("sensor[", numSensor, "]:", valueSensor1, " < ", numCompare);
+                    if (valueSensor1 < numCompare) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     break;
                 case 31:
                     console.log("compare 31");
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
                     var _boolCompare1 = boolCompare.shift();
                     var _boolCompare2 = boolCompare.shift();
-                    if(_boolCompare1 == true && _boolCompare2 == true){
+                    if (_boolCompare1 == true && _boolCompare2 == true) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     break;
                 case 32:
                     console.log("compare 32");
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
                     var _boolCompare1 = boolCompare.shift();
                     var _boolCompare2 = boolCompare.shift();
-                    if(_boolCompare1 == true || _boolCompare2 == true){
+                    if (_boolCompare1 == true || _boolCompare2 == true) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     break;
                 case 33:
                     console.log("compare 33 : XOR");
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
                     var _boolCompare1 = boolCompare.shift();
                     var _boolCompare2 = boolCompare.shift();
-                    if((_boolCompare1 && !_boolCompare2 ) || ( !_boolCompare1 && _boolCompare2 )){
+                    if ((_boolCompare1 && !_boolCompare2) || (!_boolCompare1 && _boolCompare2)) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     break;
@@ -368,44 +385,44 @@
                     console.log("compare 61 : OP_GREATER_OR_EQUAL");
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
-                    if( valueSensor1 >= numCompare){
+                    if (valueSensor1 >= numCompare) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     break;
                 case OP_LESS_OR_EQUAL:
                     console.log("compare 62 : OP_LESS_OR_EQUAL");
                     var numSensor = sensorStackForIf.shift();
                     var numCompare = imm1byte.shift();
-                    if( valueSensor1 <= numCompare){
+                    if (valueSensor1 <= numCompare) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     break;
                 case 34:
                     var _imm = imm1byte.pop();
                     var temp1 = imm1byte.pop();
-                    if(_imm !== temp1){
+                    if (_imm !== temp1) {
                         boolCompare.push(true);
                     }
-                    else{
+                    else {
                         boolCompare.push(false);
-                    } 
-                    console.log("bool 34 : ",boolCompare);
+                    }
+                    console.log("bool 34 : ", boolCompare);
                     break;
                 case 48:
                     console.log("at if-one-time function ");
                     var bufferIfinIf = [];
                     var indexGblBuf = parseInt(gblBufferTest.length, 10);
-                    for(var j=0;j<gblBufferTest[indexGblBuf-1].length;j++){
-                        bufferIfinIf.push(gblBufferTest[indexGblBuf-1][j]);
+                    for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
+                        bufferIfinIf.push(gblBufferTest[indexGblBuf - 1][j]);
                     }
                     var _boolCompare = boolCompare.pop();
-                    if(_boolCompare == true){
+                    if (_boolCompare == true) {
                         console.log("TRUEEEEEEE");
                         vmProcess(bufferIfinIf);
                     }
@@ -418,7 +435,7 @@
                     var _imm = imm1byte.pop();
                     _imm = _imm * 100;
                     sleepMillisec(_imm);
-                    console.log("wait _imm : ",_imm);
+                    console.log("wait _imm : ", _imm);
                     break;
                 case 51:
                     var cmdstr = "motorOff";
@@ -447,7 +464,7 @@
                     var _imm = imm1byte.pop();
                     sensorStackForIf.push(_imm);
                     var valuePowerOfMotor = _imm;
-                    var cmdstr = "setPower motor : "+valuePowerOfMotor;
+                    var cmdstr = "setPower motor : " + valuePowerOfMotor;
                     sendCmd(cmdstr);
                     break;
                 case 64:
@@ -456,9 +473,9 @@
                     // fix sensor value
                     var statusSensor2isOn = true;
                     var cmdstr = "sensor : " + _imm + " is on";
-                    if(statusSensor2isOn){
+                    if (statusSensor2isOn) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     sendCmd(cmdstr);
@@ -468,9 +485,9 @@
                     // GET  STATUS SENSOR
                     var statusSensorXisOff = true;
                     var cmdstr = "sensor : " + _imm + " is off";
-                    if(statusSensorXisOff){
+                    if (statusSensorXisOff) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
                     sendCmd(cmdstr);
@@ -481,27 +498,27 @@
                     // fix direction of motor
                     var statusMotorIsCW = true;
                     var cmdstr = "sensor : " + _imm + " direction is CW ";
-                    if(statusMotorIsCW){
+                    if (statusMotorIsCW) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     sendCmd(cmdstr);
                     break;
-                
+
                 case ISTHATWAY: // opcode 66
                     var _imm = imm1byte.pop();
                     // GET  STATUS SENSOR
                     // fix direction of motor
                     var statusMotorIsCCW = true;
                     var cmdstr = "sensor : " + _imm + " direction is CCW ";
-                    if(statusMotorIsCCW){
+                    if (statusMotorIsCCW) {
                         boolCompare.push(true);
-                    }else {
+                    } else {
                         boolCompare.push(false);
                     }
-                    console.log("bool : ",boolCompare);
+                    console.log("bool : ", boolCompare);
                     sendCmd(cmdstr);
                     break;
                 case SERVO_SET_H: // opcode 87
@@ -509,7 +526,7 @@
                     // GET  STATUS SENSOR
                     // fix direction of motor
                     var headerServe = _imm;
-                    var cmdstr = "servo set header: " + _imm ;
+                    var cmdstr = "servo set header: " + _imm;
                     sendCmd(cmdstr);
                     break;
                 case SERVO_LT: // opcode 87
@@ -517,7 +534,7 @@
                     // GET  STATUS SENSOR
                     // fix direction of motor
                     var headerServe = _imm;
-                    var cmdstr = "servo set SERVO_LT: " + _imm ;
+                    var cmdstr = "servo set SERVO_LT: " + _imm;
                     sendCmd(cmdstr);
                     break;
                 case SERVO_RT: // opcode 87
@@ -525,26 +542,26 @@
                     // GET  STATUS SENSOR
                     // fix direction of motor
                     var headerServe = _imm;
-                    var cmdstr = "servo set SERVO_RT: " + _imm ;
+                    var cmdstr = "servo set SERVO_RT: " + _imm;
                     sendCmd(cmdstr);
                     break;
                 case 90:
                     var _imm = imm1byte.pop();
-                    var str = "select motor "+_imm;
+                    var str = "select motor " + _imm;
                     sendCmd(str);
                     break;
                 case 99:
                     var check_type = imm1byte.pop();
-                    if(check_type == 2 ){
+                    if (check_type == 2) {
                         var _imm = imm1byte.pop();
-                        console.log("Show number : ",_imm);
+                        console.log("Show number : ", _imm);
                     }
-                    else if(check_type == 3 ){
-                        for(var i=0;i<gblString.length;i++){
+                    else if (check_type == 3) {
+                        for (var i = 0; i < gblString.length; i++) {
                             // function convert to ASCII    
                         }
-                        console.log("Show text : "+gblString);
-                    }else {
+                        console.log("Show text : " + gblString);
+                    } else {
                         console.log("ERROR IN OPCODE 99");
                     }
                     break;
@@ -552,61 +569,78 @@
                     var tempASCII_3 = imm1byte.pop();
                     var tempASCII_2 = imm1byte.pop();
                     var tempASCII_1 = imm1byte.pop();
-                    var str = "I2C Write value "+tempASCII_1 + " to Register# "+tempASCII_2 + " on device address # "+tempASCII_3;
+                    var str = "I2C Write value " + tempASCII_1 + " to Register# " + tempASCII_2 + " on device address # " + tempASCII_3;
                     sendCmd(str);
                     break;
                 case undefined:
                     break;
                 default:
-                    console.log("none jahh ",_cmdOpcode);
+                    console.log("none jahh ", _cmdOpcode);
                     break;
             }
         }
 
-        function forloop(){
-            var tempForJ = parseInt(gblBuffer1.length, 10);
-            var count =0;
-            // setInterval(function(){
-            for(var i=0;i<4;i++){
-                // boolGblBuffer = 1;
-                var bufferLoop = [];
-                for(var j=0;j<tempForJ;j++){
-                    bufferLoop.push(gblBuffer1[j]);
-                }
-                console.log("---------------------- loop ",count,"---------------------------");
-                console.log("bufferLoop :",bufferLoop);
-                vmProcess(bufferLoop);
-                count++;
-            }
-            // },1000);
-        }
-        function showNumber(){
-            console.log("none jahh ");
-        }
 
-        function Repeat(_gblBuffer1,Imm){
+        function Repeat(_gblBuffer1, Imm) {
             var loopBuffer = [];
             var tempLenghRepeat = parseInt(_gblBuffer1.length, 10);
-            for(var i=0;i<Imm;i++){
-                for(var j=0;j<tempLenghRepeat;j++){
+            for (var i = 0; i < Imm; i++) {
+                for (var j = 0; j < tempLenghRepeat; j++) {
                     loopBuffer.push(_gblBuffer1[j]);
                 }
             }
             vmProcess(loopBuffer);
         }
 
-        function cmdWait(Imm){
-            var _imm = Imm * 100;
-            console.log("wait :",_imm);
+        function forLoop(_gblBufferInForLoop) {
+            var loopBuffer = [];
+            var tempLenghInForLoop = parseInt(_gblBufferInForLoop.length, 10);
+            for (var i = 0; i < 4; i++) {
+                console.log("---------------------- loop for loop ",i,"---------------------------")
+                for (var j = 0; j < tempLenghInForLoop; j++) {
+                    loopBuffer.push(_gblBufferInForLoop[j]);
+                }
+                vmProcess(loopBuffer);
+            }
         }
-        function sendCmd(str){
+        // function forloop(){
+        //     var tempForJ = parseInt(gblBufferTest.length, 10);
+        //     // console.log("gblBufferTest ggg :",gblBufferTest[0]);
+        //     var count = 0;
+        //     // setInterval(function(){
+        //     for(var i=0;i<4;i++){
+        //         // boolGblBuffer = 1;
+        //         var bufferLoop = [];
+        //         for(var j=0;j<tempForJ;j++){
+        //             bufferLoop.push(gblBufferTest[j]);
+        //         }
+        //         console.log("---------------------- loop ",count,"---------------------------");
+        //         console.log("bufferLoop :",bufferLoop);
+        //         gblBufferTemp = bufferLoop[0];
+        //         console.log("bufferLoop 2 :",bufferLoop[0]);
+        //         console.log("gblBufferTemp :",gblBufferTemp);
+        //         vmProcess(gblBufferTemp);
+        //         count++;
+        //     }
+        //     // },1000);
+        // }
+        function showNumber() {
+            console.log("none jahh ");
+        }
+
+
+        function cmdWait(Imm) {
+            var _imm = Imm * 100;
+            console.log("wait :", _imm);
+        }
+        function sendCmd(str) {
             console.log(str);
         }
         function sleepMillisec(milliseconds) {
             var start = new Date().getTime();
             for (var i = 0; i < 1e7; i++) {
-                if ((new Date().getTime() - start) > milliseconds){
-                break;
+                if ((new Date().getTime() - start) > milliseconds) {
+                    break;
                 }
             }
         }
@@ -614,7 +648,7 @@
         function setTime() {
             totalSeconds++;
         }
-        
+
         // var count = 0;
         // if (words[count++] == "1"){
         //     console.log("word[",count,"] : ",words);
@@ -639,16 +673,16 @@
         //     if (parseInt(words[5], 10) == 9){ // start to repeat
         //         for(var i=0;i<tempLengh;i++){
         //             var temp = parseInt(words[4], 10);
-        
+
         //         }
-        
+
         //     }
         // }
 
-        
 
 
-       
+
+
         // const myFunction =(name)=> "huuttt "+name;
         // console.log(myFunction('gggg2'));
 
