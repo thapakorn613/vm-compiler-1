@@ -61,17 +61,30 @@
         // const text = "1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 0"
         /** 
          * ! for ever if ss1 < 500 talktomotor motorOn */
-        const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
+        // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
         // const text = "1, 0, 1, 0, 35, 1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 34, 3, 5, 49, 1, 10, 16, 4, 10, 0"
         // const text = "1, 1, 55, 1, 46, 29, 3, 2, 12, 4, 10, 0" // Beep
         // const text = "1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 0";
         // const text = "3, 23, 1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 4, 15, 0";
-
-
+        /**
+        * ! for ever if ss1 < 500 talktomotor motorOn */
+        // const text = "1, 1, 90, 1, 10, 88, 0"
+        // const text = "1, 0, 1, 0, 35, 1, 0, 1, 13, 35, 0"
+        // const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 5, 35, 1, 1, 1, 6, 35, 1, 2, 1, 7, 35, 0"
+        const text = "1, 0, 1, 0, 35, 1, 0, 1, 13, 35, 1, 0, 1, 0, 36, 1, 14, 23, 35, 0"
+        
+        /** 
+        * ?     const text = "  1, 0, 1, 0, 35, 
+        * ?                     1, 0, 1, 13, 35, 
+        * ?                     1, 0, 1, 0, 36, 
+        * ?                     1, 14, 23, 35, 
+        0"
+        **/
         var gblQueue = [];
+        var gblValue = [];
         var lenghtOfBuffer = 0;
         var words = text.split(', ');
-
+ 
         for (var i = 0; i < words.length; i++) {
             var tempToInt = parseInt(words[i], 10);
             gblQueue.push(tempToInt);
@@ -254,7 +267,6 @@
                     }
                     console.log("bufferTemp For loop : ", bufferTemp);
                     forLoop(bufferTemp);
-                    // forloop();
                     break;
                 case WAIT:
                     var _imm = imm1byte.pop();
@@ -380,6 +392,22 @@
                     } else {
                         boolCompare.push(false);
                     }
+                    break;
+                case 35:
+                    console.log("set Var 35");
+                    var varIndex = imm1byte.shift();
+                    var varValue = imm1byte.shift();
+                    gblValue[varIndex] = varValue
+                    console.log("gblValue[",varIndex,"] : ",  gblValue[varIndex]);
+                    break;
+                case 36:
+                    console.log("set Var 36");
+                    var tempImm = 0
+                    var varIndex = imm1byte.shift();
+                    var varValue = tempImm
+                    imm1byte.push(parseInt(tempImm, 10));
+                    gblValue[varIndex] = varValue
+                    console.log("gblValue[",varIndex,"] : ",  gblValue[varIndex]);
                     break;
                 case OP_GREATER_OR_EQUAL:
                     console.log("compare 61 : OP_GREATER_OR_EQUAL");
