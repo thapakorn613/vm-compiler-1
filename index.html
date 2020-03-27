@@ -1,12 +1,8 @@
 <html>
-
 <head>
     <title>art ronin </title>
 </head>
-
 <body>
-
-
     <script>
         const WAIT = 16;
         const OP_PLUS = 23;
@@ -71,17 +67,24 @@
         // const text = "1, 1, 90, 1, 10, 88, 0"
         // const text = "1, 0, 1, 0, 35, 1, 0, 1, 13, 35, 0"
         // const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 5, 35, 1, 1, 1, 6, 35, 1, 2, 1, 7, 35, 0"
-        const text = "1, 0, 1, 0, 35, 1, 0, 1, 13, 35, 1, 0, 1, 0, 36, 1, 14, 23, 35, 0"
-        
+        //const text = "1, 0, 1, 0, 35, 1, 0, 1, 10, 35, 1, 0, 36, 1, 10, 28, 3, 2, 12, 4, 10, 0"
+        //const texr = "                1, 0, 1,  0, 35, 1, 0, 36, 1, 10, 28, 3, 2, 12, 4, 10, 0"
+        //const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 13, 35, 1, 1, 1, 14, 35, 1, 2, 1, 16, 35, 1, 1, 1, 1, 36, 1, 14, 23, 35, 0"
+        // const text = "1, 0, 1, 0, 35, 1, 0, 1, 55, 35, 0"
+        const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 13, 35, 1, 1, 1, 14, 35, 1, 2, 1, 56, 35, 1, 1, 36, 1, 14, 28, 3, 2, 12, 4, 10, 0"
         /** 
-        * ?     const text = "  1, 0, 1, 0, 35, 
-        * ?                     1, 0, 1, 13, 35, 
-        * ?                     1, 0, 1, 0, 36, 
-        * ?                     1, 14, 23, 35, 
-        0"
+        * ?     const text = "1, 0, 1, 0, 35, 
+        * ?                   1, 1, 1, 0, 35, 
+        * ?                   1, 2, 1, 0, 35, 
+        * ?                   1, 0, 1, 13, 35, 
+        * ?                   1, 1, 1, 14, 35, 
+        * ?                   1, 2, 1, 56, 35, 
+        * ?                   1, 1, 36, 
+        * ?                   1, 14, 28, 3, 2, 12, 4, 10, 0"
         **/
         var gblQueue = [];
-        var gblValue = [];
+        var aomuntOfLenArray =10 
+        var gblVarValue = new Array(aomuntOfLenArray);
         var lenghtOfBuffer = 0;
         var words = text.split(', ');
  
@@ -292,10 +295,13 @@
                     console.log("NEW IR ");
                     break;
                 case OP_PLUS:
+                    console.log("imm1byte : ",imm1byte)
                     var _imm = imm1byte.pop();
                     var _temp1 = imm1byte.pop();
                     _imm = _temp1 + _imm;
                     imm1byte.push(_imm);
+                    
+                    console.log("imm1byte : ",imm1byte);
                     break;
                 case OP_MINUS:
                     var _imm = imm1byte.pop();
@@ -327,7 +333,6 @@
                     var temp1 = imm1byte.pop();
                     if (_imm == temp1) {
                         boolCompare.push(true);
-                        console.log("bool : ", boolCompare);
                     }
                     else {
                         boolCompare.push(false);
@@ -395,19 +400,22 @@
                     break;
                 case 35:
                     console.log("set Var 35");
-                    var varIndex = imm1byte.shift();
-                    var varValue = imm1byte.shift();
-                    gblValue[varIndex] = varValue
-                    console.log("gblValue[",varIndex,"] : ",  gblValue[varIndex]);
+                    console.log("imm1byte => ",  imm1byte);
+                    var varValue = imm1byte.pop();
+                    var varIndex = imm1byte.pop();
+                    // imm1byte.push(parseInt(varValue, 10));
+                    gblVarValue[varIndex] = varValue
+                    console.log("gblVarValue[",varIndex,"] : ",  gblVarValue[varIndex]);
+                    console.log("imm1byte =< ",  imm1byte);
                     break;
                 case 36:
                     console.log("set Var 36");
-                    var tempImm = 0
+                    console.log("gblVarValue => ",  gblVarValue);
                     var varIndex = imm1byte.shift();
-                    var varValue = tempImm
-                    imm1byte.push(parseInt(tempImm, 10));
-                    gblValue[varIndex] = varValue
-                    console.log("gblValue[",varIndex,"] : ",  gblValue[varIndex]);
+                    var varDelete = imm1byte.shift();
+                    imm1byte.push(parseInt(gblVarValue[varIndex], 10));
+                    console.log("imm1byte =< ",  imm1byte);
+                    console.log("gblVarValue[",varIndex,"] : ",  gblVarValue[varIndex]);
                     break;
                 case OP_GREATER_OR_EQUAL:
                     console.log("compare 61 : OP_GREATER_OR_EQUAL");
