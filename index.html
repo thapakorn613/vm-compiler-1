@@ -55,27 +55,34 @@
          * ! Repeat 10 beep Repeat 10 talktomotor motorOn */
         //  const text = "1, 5, 3, 15, 1, 1, 90, 49, 1, 10, 16, 1, 1, 90, 51, 1, 10, 16, 4, 9, 0"
         // const text = "1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 0"
+        
+        // const text = "1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 3, 10, 1, 0, 1, 0, 36, 1, 16, 23, 35, 4, 10, 0"
+        // const text = "1, 13, 2, 1, 244, 62, 3, 4, 1, 100, 59, 4, 10, 0"
         /** 
-         * ! for ever if ss1 < 500 talktomotor motorOn */
-        // const text = "3, 16, 1, 1, 55, 2, 1, 244, 30, 3, 5, 1, 1, 90, 49, 4, 10, 4, 15, 0"
-        // const text = "1, 0, 1, 0, 35, 1, 0, 1, 0, 35, 1, 0, 36, 2, 1, 244, 28, 34, 3, 5, 49, 1, 10, 16, 4, 10, 0"
-        // const text = "1, 1, 55, 1, 46, 29, 3, 2, 12, 4, 10, 0" // Beep
-        // const text = "1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 0";
-        // const text = "3, 23, 1, 1, 55, 2, 1, 244, 29, 3, 5, 1, 13, 90, 49, 4, 3, 5, 1, 13, 90, 51, 4, 11, 4, 15, 0";
-        /**
-        * ! for ever if ss1 < 500 talktomotor motorOn */
-        // const text = "1, 1, 90, 1, 10, 88, 0"
+        * * ? check var */
+        // const text = "1, 0, 1, 13, 35, 1, 13, 28, 3, 2, 12, 4, 10, 0"
+        // const text = "1, 0, 1, 0, 35, 1, 0, 36, 1, 0, 28, 3, 10, 1, 0, 1, 0, 36, 1, 16, 23, 35, 4, 10, 0" 
+        // const text = "1, 0, 1, 0, 35, 1, 0, 36, 1, 0, 28, 3, 10, 1, 0, 1, 0, 36, 1, 16, 23, 35, 4, 10, 0"
+        /** 
+        * * ? check sensor */
+        // const text = "1, 1, 55, 2, 1, 244, 62, 3, 4, 1, 100, 59, 4, 10, 0"        
+        /** 
+         * * ? check normal */
         // const text = "1, 0, 1, 0, 35, 1, 0, 1, 13, 35, 0"
-        // const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 5, 35, 1, 1, 1, 6, 35, 1, 2, 1, 7, 35, 0"
-        //const text = "1, 0, 1, 0, 35, 1, 0, 1, 10, 35, 1, 0, 36, 1, 10, 28, 3, 2, 12, 4, 10, 0"
-        //const texr = "                1, 0, 1,  0, 35, 1, 0, 36, 1, 10, 28, 3, 2, 12, 4, 10, 0"
-        //const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 13, 35, 1, 1, 1, 14, 35, 1, 2, 1, 16, 35, 1, 1, 1, 1, 36, 1, 14, 23, 35, 0"
-        const text = "1,1,90,1,12,1,10,30,3,4,1,10,87,4,3,19,1,12,1,40,29,3,4,1,40,87,4,3,4,1,12,87,4,11,4,11,1,2,90,1,28,1,10,30,3,4,1,10,87,4,3,19,1,28,1,40,29,3,4,1,40,87,4,3,4,1,28,87,4,11,4,11,1,4,90,1,15,1,10,30,3,4,1,10,87,4,3,19,1,15,1,40,29,3,4,1,40,87,4,3,4,1,15,87,4,11,4,11,1,8,90,1,32,1,10,30,3,4,1,10,87,4,3,19,1,32,1,40,29,3,4,1,40,87,4,3,4,1,32,87,4,11,4,11,109,2,241,1,8,55,2,1,244,29,109,2,229,12,1,1,90,1,12,1,10,30,3,4,1,10,87,4,3,19,1,12,1,40,29,3,4,1,40,87,4,3,4,1,12,87,4,11,4,11,1,2,90,1,28,1,10,30,3,4,1,10,87,4,3,19,1,28,1,40,29,3,4,1,40,87,4,3,4,1,28,87,4,11,4,11,1,4,90,1,15,1,10,30,3,4,1,10,87,4,3,19,1,15,1,40,29,3,4,1,40,87,4,3,4,1,15,87,4,11,4,11,1,8,90,1,32,1,10,30,3,4,1,10,87,4,3,19,1,32,1,40,29,3,4,1,40,87,4,3,4,1,32,87,4,11,4,11,1,1,109,2,77,1,1,1,10,25,16,1,2,90,1,40,1,10,30,3,4,1,10,87,4,3,19,1,40,1,40,29,3,4,1,40,87,4,3,4,1,40,87,4,11,4,11,1,1,1,10,25,16,1,1,90,1,40,1,10,30,3,4,1,10,87,4,3,19,1,40,1,40,29,3,4,1,40,87,4,3,4,1,40,87,4,11,4,11,1,1,1,10,25,16,1,4,90,1,25,1,10,30,3,4,1,10,87,4,3,19,1,25,1,40,29,3,4,1,40,87,4,3,4,1,25,87,4,11,4,11,1,1,1,10,25,16,1,8,90,1,15,1,10,30,3,4,1,10,87,4,3,19,1,15,1,40,29,3,4,1,40,87,4,3,4,1,15,87,4,11,4,11,1,1,1,10,25,16,1,8,90,1,32,1,10,30,3,4,1,10,87,4,3,19,1,32,1,40,29,3,4,1,40,87,4,3,4,1,32,87,4,11,4,11,1,1,1,10,25,16,1,4,90,1,15,1,10,30,3,4,1,10,87,4,3,19,1,15,1,40,29,3,4,1,40,87,4,3,4,1,15,87,4,11,4,11,1,1,1,10,25,16,1,1,90,1,12,1,10,30,3,4,1,10,87,4,3,19,1,12,1,40,29,3,4,1,40,87,4,3,4,1,12,87,4,11,4,11,1,1,1,10,25,16,1,2,90,1,10,1,10,30,3,4,1,10,87,4,3,19,1,10,1,40,29,3,4,1,40,87,4,3,4,1,10,87,4,11,4,11,1,1,1,10,25,16,1,1,90,1,40,1,10,30,3,4,1,10,87,4,3,19,1,40,1,40,29,3,4,1,40,87,4,3,4,1,40,87,4,11,4,11,1,1,1,10,25,16,1,4,90,1,25,1,10,30,3,4,1,10,87,4,3,19,1,25,1,40,29,3,4,1,40,87,4,3,4,1,25,87,4,11,4,11,1,1,1,10,25,16,1,8,90,1,15,1,10,30,3,4,1,10,87,4,3,19,1,15,1,40,29,3,4,1,40,87,4,3,4,1,15,87,4,11,4,11,1,1,1,10,25,16,1,8,90,1,32,1,10,30,3,4,1,10,87,4,3,19,1,32,1,40,29,3,4,1,40,87,4,3,4,1,32,87,4,11,4,11,1,1,1,10,25,16,1,4,90,1,15,1,10,30,3,4,1,10,87,4,3,19,1,15,1,40,29,3,4,1,40,87,4,3,4,1,15,87,4,11,4,11,1,1,1,10,25,16,1,1,90,1,12,1,10,30,3,4,1,10,87,4,3,19,1,12,1,40,29,3,4,1,40,87,4,3,4,1,12,87,4,11,4,11,4,9,4,10,4,15,0"
-        // const text = "1, 0, 1, 0, 35, 1, 1, 1, 0, 35, 1, 2, 1, 0, 35, 1, 0, 1, 13, 35, 1, 1, 1, 14, 35, 1, 2, 1, 56, 35, 1, 1, 36, 1, 14, 28, 3, 2, 12, 4, 10, 0"
-     
+        const text = "1, 1, 55, 1, 3, 55, 2, 1, 244, 30, 31, 3, 5, 1, 1, 90, 49, 4, 10, 0"
+
+
         var gblQueue = [];
-        var aomuntOfLenArray =10 
-        var gblVarValue = new Array(aomuntOfLenArray);
+
+        var gblVarSetBegin = 0
+
+        var gblCheckSensor = 0
+        var gblCheckVar = 0
+        var gblVarStatus = [0,0,0,0,0,0,0,0,0,0]
+        var gblVarValue = [0,0,0,0,0,0,0,0,0,0]
+        var gblSensorStatus = [0,0,0,0,0,0,0,0]
+        var gblSensorValue = [0,0,0,0,0,0,0,0]
+
         var lenghtOfBuffer = 0;
         var words = text.split(', ');
  
@@ -87,8 +94,7 @@
         var imm1byte = [];
         var boolCompare = [];
 
-        var valueSensor1 = 200;
-        var sensorStackForIf = [];
+        var valueSensor1 = 100;
         var localBuffer = [];
         // var gblBuffer = [];
         var gblBufferTest = [];
@@ -120,7 +126,7 @@
             // console.log("_gblQueue ,",_gblQueue);
             var loop = _gblQueue.shift();
             // Stack
-            for (var i = 0; i < 1000; i++) {
+            for (var i = 0; i < 50000; i++) {
                 if (loop == 1) {
                     var tempImm = _gblQueue.shift();
                     imm1byte.push(parseInt(tempImm, 10));
@@ -142,7 +148,7 @@
                     cmdProcess(typeCompare);
                     loop = _gblQueue.shift(); // next set
                 } else if (loop == 3) { //  start of list
-                    console.log("check ")
+                    console.log("- type 3 : list ")
                     var lenghtBuf = _gblQueue.shift();
                     var bufferTemp = [];
                     for (var i = 0; i < lenghtBuf; i++) {
@@ -205,7 +211,7 @@
                     for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
                         bufferIf.push(gblBufferTest[indexGblBuf - 1][j]);
                     }
-                    console.log("bufferIf : ", bufferIf);
+                    console.log("boolCompare : ", boolCompare);
                     var _boolCompare = boolCompare.pop();
                     if (_boolCompare == true) {
                         console.log("TRUEEEEEEE");
@@ -219,17 +225,20 @@
                     var _boolCompare = boolCompare.pop();
                     var bufferIfinIf = [];
                     var indexGblBuf = parseInt(gblBufferTest.length, 10);
+                    
+                    console.log("indexGblBuf : ", indexGblBuf);
                     if (_boolCompare == true) {
-                        for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
-                            bufferIfinIf.push(gblBufferTest[indexGblBuf - 1][j]);
+                        
+                        for (var j = 0; j < gblBufferTest[indexGblBuf - 2].length; j++) {
+                            bufferIfinIf.push(gblBufferTest[indexGblBuf - 2][j]);
                         }
                         console.log("TRUEEEEEEE");
                         console.log("bufferIfinIf : ", bufferIfinIf);
                         vmProcess(bufferIfinIf);
                     } else {
                         var indexGblBuf = parseInt(gblBufferTest.length, 10);
-                        for (var j = 0; j < gblBufferTest[indexGblBuf - 2].length; j++) {
-                            bufferIfinIf.push(gblBufferTest[indexGblBuf - 2][j]);
+                        for (var j = 0; j < gblBufferTest[indexGblBuf - 1].length; j++) {
+                            bufferIfinIf.push(gblBufferTest[indexGblBuf - 1][j]);
                         }
                         console.log("Falseeeeee");
                         console.log("bufferIfinIf : ", bufferIfinIf);
@@ -288,7 +297,7 @@
                     console.log("NEW IR ");
                     break;
                 case OP_PLUS:
-                    console.log("imm1byte : ",imm1byte)
+                    console.log("imm1byte plus : ",imm1byte)
                     var _imm = imm1byte.pop();
                     var _temp1 = imm1byte.pop();
                     _imm = _temp1 + _imm;
@@ -321,41 +330,132 @@
                     _imm = temp1 % _imm;
                     imm1byte.push(_imm);
                     break;
-                case 28: // 
-                    var _imm = imm1byte.pop();
-                    var temp1 = imm1byte.pop();
-                    if (_imm == temp1) {
-                        boolCompare.push(true);
+                case 28: //
+                    console.log("- EQUAL -")
+                    if(gblCheckSensor == 1){
+                        var _value2 = imm1byte.pop()
+                        var _value1 = imm1byte.pop()
+                        var indexSensor = gblSensorStatus[_value1]
+                        // valueSensor1  = get value sensor 
+                        gblSensorValue[indexSensor] = valueSensor1
+                        if (gblSensorValue[indexSensor] == _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckSensor = 0
+                    }
+                    else if(gblCheckVar == 1){
+                        console.log("imm1byte gblCheckVar : ",imm1byte)
+                        var _value1 = imm1byte.shift()
+                        var _value2 = imm1byte.shift()
+                        console.log("_value1 : ",_value1)
+                        // gblVarValue[_value1] = _value2
+                        var varValue = gblVarValue[_value1]
+                        console.log("varValue : ",varValue)
+                        // value of var  = get value var 
+                        if (varValue == _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckVar = 0
                     }
                     else {
-                        boolCompare.push(false);
+                        if (_value1 == _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
                     }
-                    // imm1byte.push(_imm);
                     break;
                 case 29:
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.pop();
-                    console.log("sensor[", numSensor, "]:", valueSensor1, " > ", numCompare);
-                    if (valueSensor1 > numCompare) {
-                        boolCompare.push(true);
-                    } else {
-                        boolCompare.push(false);
+                    if(gblCheckSensor == 1){
+                        var _value2 = imm1byte.pop()
+                        var _value1 = imm1byte.pop()
+                        var indexSensor = gblSensorStatus[_value1]
+                        // valueSensor1  = get value sensor 
+                        gblSensorValue[indexSensor] = valueSensor1
+                        if (gblSensorValue[indexSensor] > _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckSensor = 0
+                    }
+                    else if(gblCheckVar == 1){
+                        console.log("imm1byte gblCheckVar : ",imm1byte)
+                        var _value1 = imm1byte.shift()
+                        var _value2 = imm1byte.shift()
+                        console.log("_value1 : ",_value1)
+                        // gblVarValue[_value1] = _value2
+                        var varValue = gblVarValue[_value1]
+                        console.log("varValue : ",varValue)
+                        // value of var  = get value var 
+                        if (varValue > _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckVar = 0
+                    }
+                    else {
+                        if (_value1 > _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
                     }
                     break;
                 case 30:
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.shift();
-                    console.log("sensor[", numSensor, "]:", valueSensor1, " < ", numCompare);
-                    if (valueSensor1 < numCompare) {
-                        boolCompare.push(true);
-                    } else {
-                        boolCompare.push(false);
+                    if(gblCheckSensor == 1){
+                        var _value2 = imm1byte.pop()
+                        var _value1 = imm1byte.pop()
+                        var indexSensor = gblSensorStatus[_value1]
+                        // valueSensor1  = get value sensor 
+                        gblSensorValue[indexSensor] = valueSensor1
+                        if (gblSensorValue[indexSensor] < _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckSensor = 0
+                    }
+                    else if(gblCheckVar == 1){
+                        console.log("imm1byte gblCheckVar : ",imm1byte)
+                        var _value1 = imm1byte.shift()
+                        var _value2 = imm1byte.shift()
+                        console.log("_value1 : ",_value1)
+                        // gblVarValue[_value1] = _value2
+                        var varValue = gblVarValue[_value1]
+                        console.log("varValue : ",varValue)
+                        // value of var  = get value var 
+                        if (varValue < _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckVar = 0
+                    }
+                    else {
+                        if (_value1 < _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
                     }
                     break;
                 case 31:
-                    console.log("bool : ", boolCompare);
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.shift();
+                    console.log("compare 31 AND ");
                     var _boolCompare1 = boolCompare.shift();
                     var _boolCompare2 = boolCompare.shift();
                     if (_boolCompare1 == true && _boolCompare2 == true) {
@@ -366,9 +466,6 @@
                     break;
                 case 32:
                     console.log("compare 32");
-                    console.log("bool : ", boolCompare);
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.shift();
                     var _boolCompare1 = boolCompare.shift();
                     var _boolCompare2 = boolCompare.shift();
                     if (_boolCompare1 == true || _boolCompare2 == true) {
@@ -379,9 +476,6 @@
                     break;
                 case 33:
                     console.log("compare 33 : XOR");
-                    console.log("bool : ", boolCompare);
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.shift();
                     var _boolCompare1 = boolCompare.shift();
                     var _boolCompare2 = boolCompare.shift();
                     if ((_boolCompare1 && !_boolCompare2) || (!_boolCompare1 && _boolCompare2)) {
@@ -390,55 +484,149 @@
                         boolCompare.push(false);
                     }
                     break;
-                case 35:
-                    console.log("set Var 35");
+                case 35 :
+                    console.log("set Var 35 !");
                     console.log("imm1byte => ",  imm1byte);
-                    var varValue = imm1byte.pop();
-                    var varIndex = imm1byte.pop();
-                    // imm1byte.push(parseInt(varValue, 10));
-                    gblVarValue[varIndex] = varValue
-                    console.log("gblVarValue[",varIndex,"] : ",  gblVarValue[varIndex]);
-                    console.log("imm1byte =< ",  imm1byte);
+                    var varIndex = 0 ;
+                    var varValue = 0 ;
+                    gblCheckVar = 1
+                    if(imm1byte.length == 1){
+                        console.log("check begin lenght = "+imm1byte.length);
+                        varIndex = imm1byte.shift();
+                        varValue = imm1byte.shift();
+                        gblVarValue[varIndex] = varValue
+                        
+                    }else {
+                        console.log("check begin lenght = "+imm1byte.length);
+                        varIndex = imm1byte.shift();
+                        varValue = imm1byte.shift();
+                        gblVarValue[varIndex] = varValue
+                        // imm1byte.push(varIndex)
+                        gblVarSetBegin = 1 
+                    }
+                    console.log("gblVarValue[",varIndex,"] : ",  varValue);
+                    console.log("gblVarValue =< ",  gblVarValue);
                     break;
-                case 36:
+                case 36 :
                     console.log("set Var 36");
-                    console.log("gblVarValue => ",  gblVarValue);
+                    console.log("imm1byte => ",  imm1byte);
                     var varIndex = imm1byte.shift();
-                    var varDelete = imm1byte.shift();
                     imm1byte.push(parseInt(gblVarValue[varIndex], 10));
                     console.log("imm1byte =< ",  imm1byte);
                     console.log("gblVarValue[",varIndex,"] : ",  gblVarValue[varIndex]);
                     break;
                 case OP_GREATER_OR_EQUAL:
                     console.log("compare 61 : OP_GREATER_OR_EQUAL");
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.shift();
-                    if (valueSensor1 >= numCompare) {
-                        boolCompare.push(true);
-                    } else {
-                        boolCompare.push(false);
+                    if(gblCheckSensor == 1){
+                        var _value2 = imm1byte.pop()
+                        var _value1 = imm1byte.pop()
+                        var indexSensor = gblSensorStatus[_value1]
+                        // valueSensor1  = get value sensor 
+                        gblSensorValue[indexSensor] = valueSensor1
+                        if (gblSensorValue[indexSensor] >= _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckSensor = 0
                     }
-                    console.log("bool : ", boolCompare);
+                    else if(gblCheckVar == 1){
+                        var _value1 = imm1byte.shift()
+                        var _value2 = imm1byte.shift()
+                        var varValue = gblVarValue[_value1]
+                        // value of var  = get value var 
+                        if (varValue  >= _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckVar = 0
+                    }
+                    else {
+                        if (_value1 >= _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                    }
                     break;
                 case OP_LESS_OR_EQUAL:
                     console.log("compare 62 : OP_LESS_OR_EQUAL");
-                    var numSensor = sensorStackForIf.shift();
-                    var numCompare = imm1byte.shift();
-                    if (valueSensor1 <= numCompare) {
-                        boolCompare.push(true);
-                    } else {
-                        boolCompare.push(false);
+                    if(gblCheckSensor == 1){
+                        var _value2 = imm1byte.pop()
+                        var _value1 = imm1byte.pop()
+                        var indexSensor = gblSensorStatus[_value1]
+                        // valueSensor1  = get value sensor 
+                        gblSensorValue[indexSensor] = valueSensor1
+                        if (gblSensorValue[indexSensor] <= _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckSensor = 0
+                    }
+                    else if(gblCheckVar == 1){
+                        var _value1 = imm1byte.shift()
+                        var _value2 = imm1byte.shift()
+                        var varValue = gblVarValue[_value1]
+                        // value of var  = get value var 
+                        if (varValue  <= _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckVar = 0
+                    }
+                    else {
+                        if (_value1 <= _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
                     }
                     console.log("bool : ", boolCompare);
                     break;
                 case 34:
-                    var _imm = imm1byte.pop();
-                    var temp1 = imm1byte.pop();
-                    if (_imm !== temp1) {
-                        boolCompare.push(true);
+                    if(gblCheckSensor == 1){
+                        var _value2 = imm1byte.pop()
+                        var _value1 = imm1byte.pop()
+                        var indexSensor = gblSensorStatus[_value1]
+                        // valueSensor1  = get value sensor 
+                        gblSensorValue[indexSensor] = valueSensor1
+                        if (gblSensorValue[indexSensor] !== _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckSensor = 0
+                    }
+                    else if(gblCheckVar == 1){
+                        var _value1 = imm1byte.shift()
+                        var _value2 = imm1byte.shift()
+                        var varValue = gblVarValue[_value1]
+                        // value of var  = get value var 
+                        if (varValue !== _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
+                        gblCheckVar = 0
                     }
                     else {
-                        boolCompare.push(false);
+                        if (_value1 !== _value2) {
+                            boolCompare.push(true);
+                        }
+                        else {
+                            boolCompare.push(false);
+                        }
                     }
                     console.log("bool 34 : ", boolCompare);
                     break;
@@ -483,14 +671,17 @@
                     break;
                 case 55:
                     var _imm = imm1byte.pop();
-                    sensorStackForIf.push(_imm);
-                    // var cmdstr = "sensor : " + _imm;
-                    console.log("sensorStackForIf : ",sensorStackForIf);
+                    gblCheckSensor = 1
+                    gblSensorStatus[_imm] = 1
+                    imm1byte.push(_imm);
+                    console.log("gblSensorStatus : ",gblSensorStatus);
+                    var cmdstr = "sensor"
+                    console.log("imm1byte : ",imm1byte);
                     sendCmd(cmdstr);
                     break;
                 case SETPOWER:
                     var _imm = imm1byte.pop();
-                    sensorStackForIf.push(_imm);
+                    // sensorStackForIf.push(_imm);
                     var valuePowerOfMotor = _imm;
                     var cmdstr = "setPower motor : " + valuePowerOfMotor;
                     sendCmd(cmdstr);
